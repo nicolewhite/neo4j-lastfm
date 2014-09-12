@@ -3,9 +3,11 @@ library(RNeo4j)
 library(jsonlite)
 library(dplyr)
 
+setwd('~/Documents/GitHub/last_fm_graph')
+
 # REST API things.
 REST_URL = "http://ws.audioscrobbler.com/2.0/"
-USER = "nmwhite0131"
+USER = "smooligans"
 API_KEY = Sys.getenv('LASTFM_KEY')
 
 # Convert JSON to data frame.
@@ -37,14 +39,14 @@ repeat{
                  to = max_unix,
                  format = "json")
   
-  new_data = try(clean(json), silent = F)
+  new_data = try(clean(json), silent = T)
   
   if(class(new_data) == "try-error") {
     break
   }
   
   data = rbind(data, new_data)
-  print(paste(nrow(new_data), "more records added."))
+  print(paste(nrow(new_data), "more records added for a total of", nrow(data), "records."))
   
   max_unix = min(new_data$timestamp)
   Sys.sleep(5)
@@ -52,6 +54,9 @@ repeat{
 
 # Reorder data by timestamp ascending.
 data = arrange(data, timestamp)
+
+# Write to csv.
+write.csv(data, file = paste0(USER, '_scrobbles.csv'), row.names = F)
 
 # Connect to graph db and add uniqueness constraints.
 graph = startGraph("http://localhost:2873/db/data/")
@@ -106,5 +111,5 @@ for (i in 1:nrow(data)) {
                album = data$album[i])
 }
 
-print("Commiting last transaction...")
+print("Committing last transaction...")
 commit(tx)
