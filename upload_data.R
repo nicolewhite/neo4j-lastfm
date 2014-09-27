@@ -16,7 +16,7 @@ names(data)
 # Connect to graph db and add uniqueness constraints.
 library(RNeo4j)
 
-graph = startGraph("http://localhost:2873/db/data/")
+graph = startGraph("http://localhost:7474/db/data/")
 
 addConstraint(graph, "User", "username")
 addConstraint(graph, "Artist", "name")
