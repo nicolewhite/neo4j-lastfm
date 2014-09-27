@@ -1,6 +1,5 @@
 # Don't run this while currently scrobbling. 
 # The now-playing track will not have a timestamp, which'll mess everything up.
-setwd('~/Documents/GitHub/last_fm_graph')
 options(stringsAsFactors = F)
 
 library(RCurl)
