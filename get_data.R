@@ -64,7 +64,7 @@ get_scrobbles <- function(user) {
   write.csv(data, file = paste(Sys.Date(), user, 'scrobbles.csv', sep = "_"), row.names = F)
 }
 
-# Get scrobble history for me and my friend Julian.
+# Get scrobble history for me and my friends.
 get_scrobbles("nmwhite0131")
 get_scrobbles("smooligans")
 get_scrobbles("aaronsrun")
